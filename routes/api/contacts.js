@@ -2,40 +2,20 @@ const express = require("express");
 
 const router = express.Router();
 
-const {
-  listContacts,
-  getContactById,
-  addContact,
-  removeContact,
-  updateContact,
-} = require("../../models/contacts");
+const { contacts:ctrl } = require("../../controllers");
 
-router.get("/", async (req, res, next) => {
-  const data = await listContacts();
-  res.json(data);
-});
+const {validation, ctrlWrapper} = require("../../middlewares");
 
-router.get("/:contactId", async (req, res, next) => {
-  const { contactId } = req.params;
-  const data = await getContactById(contactId);
-  res.json(data);
-});
+const {contactSchema} = require("../../schemas");
 
-router.post("/", async (req, res, next) => {
-  const data = await addContact(req.body);
-  res.json(data);
-});
+router.get("/", ctrlWrapper(ctrl.getAll));
 
-router.delete("/:contactId", async (req, res, next) => {
-  const { contactId } = req.params;
-  const data = await removeContact(contactId);
-  res.json(data);
-});
+router.get("/:contactId", ctrlWrapper(ctrl.getById));
 
-router.put("/:contactId", async (req, res, next) => {
-  const { contactId } = req.params;
-  const data = await updateContact(contactId, req.body);
-  res.json(data);
-});
+router.post("/",validation(contactSchema), ctrlWrapper(ctrl.add));
+
+router.delete("/:contactId", ctrlWrapper(ctrl.deleteById));
+
+router.put("/:contactId",validation(contactSchema), ctrlWrapper(ctrl.updateById));
 
 module.exports = router;
