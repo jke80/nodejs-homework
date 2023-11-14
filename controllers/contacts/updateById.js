@@ -3,15 +3,17 @@ const {updateContact} = require("../../models/contacts");
 
 const updateById = async (req, res) => {
     const { contactId } = req.params;
+    // console.log("------",Object.keys(req.body).length);
+    // if(!Object.keys(req.body).length){
+    //     res.status(400).json({
+    //     message:"missing fields"
+    //   })
+    // }
     const data = await updateContact(contactId, req.body);
     if(!data){
-      throw NotFound(`Contact with id=${contactId} not found`);
+      throw NotFound(`Not Found`);
     }
-    res.status(200).json({
-      status:"success",
-      code:200,
-      data
-    });
+    res.json(data);
   }
 
   module.exports = updateById;
