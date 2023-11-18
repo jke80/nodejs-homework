@@ -1,7 +1,8 @@
-const {addContact} = require("../../models/contacts")
-const add = async (req, res) => {
-    const data = await addContact(req.body);
-    res.status(201).json(data);
-  }
+const { Contact } = require("../../models/contact");
 
-  module.exports = add;
+const add = async (req, res) => {
+  const result = await Contact.create(req.body);
+  res.status(201).json(result);
+};
+
+module.exports = add;
