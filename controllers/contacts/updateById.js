@@ -1,4 +1,4 @@
-const { NotFound } = require("http-errors");
+const { httpError } = require("../../helpers");
 const { Contact } = require("../../models/contact");
 
 const updateById = async (req, res) => {
@@ -7,7 +7,7 @@ const updateById = async (req, res) => {
     new: true,
   });
   if (!result) {
-    throw NotFound(`Not Found`);
+    throw httpError(404);
   }
   res.json(result);
 };
