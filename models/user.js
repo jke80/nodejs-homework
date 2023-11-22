@@ -35,7 +35,7 @@ userSchema.post("save", handleMongooseError);
 
 const User = model("user", userSchema);
 
-const registerSchema = Joi.object()
+const registerAndLoginSchema = Joi.object()
   .min(1)
   .messages({
     "object.min": "missing fields",
@@ -53,8 +53,18 @@ const registerSchema = Joi.object()
     }),
   });
 
+const updateSubscriptionSchema = Joi.object({
+  subscription: Joi.string()
+    .required()
+    .valid("starter", "pro", "business")
+    .messages({
+      "any.required": "missing field subscription",
+      "any.only": "invalid subscription value",
+    }),
+});
 const schemas = {
-  registerSchema,
+  registerAndLoginSchema,
+  updateSubscriptionSchema,
 };
 
 module.exports = {
