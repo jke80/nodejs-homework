@@ -7,7 +7,7 @@ const getAll = async (req, res) => {
   if (favorite) {
     filter.favorite = favorite;
   }
-  console.log(favorite, filter);
+
   const skip = (page - 1) * limit;
   const result = await Contact.find(filter, "-createdAt, -updatedAt", {
     skip,
