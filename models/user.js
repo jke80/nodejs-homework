@@ -65,6 +65,7 @@ const updateSubscriptionSchema = Joi.object({
       "any.required": "missing required subscription field",
     }),
 });
+
 const schemas = {
   registerAndLoginSchema,
   updateSubscriptionSchema,
