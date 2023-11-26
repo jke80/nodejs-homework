@@ -1,5 +1,5 @@
-const fs = require("fs").promises;
 const path = require("path");
+const jimp = require("jimp");
 const avatarDir = path.join(process.cwd(), "public", "avatars");
 
 const updateAvatar = async (req, res, next) => {
@@ -8,9 +8,9 @@ const updateAvatar = async (req, res, next) => {
   const resultName = path.join(avatarDir, `${id}` + originalname);
 
   try {
-    await fs.rename(tmpName, resultName);
+    const avatar = await jimp.read(tmpName);
+    await avatar.resize(250, 250).quality(60).writeAsync(resultName);
   } catch (e) {
-    await fs.unlink(tmpName);
     return next(e);
   }
 
