@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const mongoose = require("mongoose");
 require("dotenv").config();
 const { DB_HOST } = process.env;
@@ -13,7 +14,7 @@ describe("POST /users/login", () => {
     });
   });
 
-  it("should respond with status code 200,should respond token and user", async () => {
+  it("POST /users/login test", async () => {
     const res = await req(app).post("/users/login").send({
       email: "user@example.com",
       password: "password",

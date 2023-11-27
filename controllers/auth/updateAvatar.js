@@ -1,21 +1,25 @@
+const fse = require("fs-extra");
 const path = require("path");
 const jimp = require("jimp");
-const avatarDir = path.join(process.cwd(), "public", "avatars");
+const { httpError } = require("../../helpers");
+const { User } = require("../../models/user");
 
 const updateAvatar = async (req, res, next) => {
-  const { path: tmpName, originalname } = req.file;
-  const { _id: id } = req.user;
-  const resultName = path.join(avatarDir, `${id}` + originalname);
-
-  try {
-    const avatar = await jimp.read(tmpName);
-    await avatar.resize(250, 250).quality(60).writeAsync(resultName);
-  } catch (e) {
-    return next(e);
+  if (!req.file) {
+    throw httpError(401, "Not authorized");
   }
 
+  const { path: tmpName, originalname } = req.file;
+  const { _id } = req.user;
+
+  const avatarURL = path.join("public", "avatars", `${_id}` + originalname);
+  const resultName = path.join(process.cwd(), avatarURL);
+  const avatar = await jimp.read(tmpName);
+  await avatar.resize(250, 250).quality(60).writeAsync(resultName);
+  await fse.remove(tmpName);
+  await User.findOneAndUpdate({ _id }, { avatarURL });
   res.status(200).json({
-    avatarUrl: resultName,
+    avatarURL,
   });
 };
 
