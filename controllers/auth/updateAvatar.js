@@ -6,7 +6,7 @@ const { User } = require("../../models/user");
 
 const updateAvatar = async (req, res, next) => {
   if (!req.file) {
-    throw httpError(401, "Not authorized");
+    throw httpError(400, "File not selected for upload. Please choose a file");
   }
 
   const { path: tmpName, originalname } = req.file;
