@@ -12,8 +12,8 @@ const updateAvatar = async (req, res, next) => {
   const { path: tmpName, originalname } = req.file;
   const { _id } = req.user;
 
-  const avatarURL = path.join("public", "avatars", `${_id}` + originalname);
-  const resultName = path.join(process.cwd(), avatarURL);
+  const avatarURL = path.join("avatars", `${_id}` + originalname);
+  const resultName = path.join(process.cwd(), "public", avatarURL);
   const avatar = await jimp.read(tmpName);
   await avatar.resize(250, 250).quality(60).writeAsync(resultName);
   await fse.remove(tmpName);
