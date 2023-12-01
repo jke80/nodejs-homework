@@ -27,6 +27,9 @@ const userSchema = new Schema(
       type: String,
       default: "",
     },
+    avatarURL: {
+      type: String,
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -62,6 +65,7 @@ const updateSubscriptionSchema = Joi.object({
       "any.required": "missing required subscription field",
     }),
 });
+
 const schemas = {
   registerAndLoginSchema,
   updateSubscriptionSchema,
